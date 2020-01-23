@@ -3,7 +3,7 @@
 
 	<add_link source_path="mpas_model" source="testing_and_setup/compass/ocean/jigsaw_to_MPAS" dest="jigsaw_to_MPAS"/>
 	<add_link source_path="script_test_dir" source="." dest="define_base_mesh"/>
-	<add_link source_path="script_test_dir" source="greenland_1km_2017_06_27.epsg3413.nc" dest="."/>
+	<add_link source_path="script_test_dir" source="greenland_1km_2017_06_27.epsg3413.icesheetonly.nc" dest="."/>
 	<add_link source_path="script_test_dir" source="greenland_8km_2017_06_27.epsg3413.nc" dest="."/>
 
 	<run_script name="create_mesh.py">
@@ -33,7 +33,7 @@
 
                 <!-- Set up initial condition on to landice mesh -->
                 <step executable="interpolate_to_mpasli_grid.py" pre_message="\n\n### Setting up initial condition\n\n" post_message="\n\n### Initial condition setup complete\n\n">
-                        <argument flag="-s">greenland_1km_2017_06_27.epsg3413.nc</argument>
+                        <argument flag="-s">greenland_1km_2017_06_27.epsg3413.icesheetonly.nc</argument>
                         <argument flag="-d">gis_1km_preCull.nc</argument>
                         <argument flag="-m">b</argument>
                         <argument flag="-t"></argument>
@@ -71,7 +71,7 @@
 
                 <!-- Set up initial condition on to landice mesh -->
                 <step executable="interpolate_to_mpasli_grid.py" pre_message="\n\n### Setting up initial condition\n\n" post_message="\n\n### Initial condition setup complete\n\n">
-                        <argument flag="-s">greenland_1km_2017_06_27.epsg3413.nc</argument>
+                        <argument flag="-s">greenland_1km_2017_06_27.epsg3413.icesheetonly.nc</argument>
                         <argument flag="-d">gis_1km.nc</argument>
                         <argument flag="-m">b</argument>
                         <argument flag="-t"></argument>
