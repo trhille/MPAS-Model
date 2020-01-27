@@ -112,8 +112,7 @@ if experiment in ('a', 'f', 'g'):
     gridfile.variables['bedTopography'][:] = 0.0
     # constant, arbitrary temperature, degrees K (doesn't matter since there is no ice initially)
     gridfile.variables['temperature'][:] = 273.15
-    # Setup layerThicknessFractions
-    gridfile.variables['layerThicknessFractions'][:] = 1.0 / nVertLevels
+
 else:
     StrLen= len(gridfile.dimensions['StrLen'])
     gridfile.variables['xtime'][0,:] = list('000000-01-01_00:00:00'.ljust(StrLen, ' '))
