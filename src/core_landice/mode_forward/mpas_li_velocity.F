@@ -784,7 +784,7 @@ contains
    subroutine calculate_beta(block, err)
 
       use li_mask
-      use li_subglacial_hydro
+
       !-----------------------------------------------------------------
       ! input variables
       !-----------------------------------------------------------------
@@ -831,11 +831,10 @@ contains
       call mpas_pool_get_subpool(block % structs, 'velocity', velocityPool)
       call mpas_pool_get_subpool(block % structs, 'thermal', thermalPool)
       call mpas_pool_get_subpool(block % structs, 'mesh', meshPool)
-      call mpas_pool_get_subpool(block % structs, 'hydro', hydroPool)
 
       call mpas_pool_get_array(velocityPool, 'betaSolve', betaSolve)
       call mpas_pool_get_array(velocityPool, 'beta', beta)
-      call mpas_pool_get_array(hydroPool, 'effectivePressure', effectivePressure)
+      call mpas_pool_get_array(velocityPool, 'effectivePressureLimited', effectivePressure)
       call mpas_pool_get_array(geometryPool, 'cellMask', cellMask)
 
       betaSolve = beta
@@ -845,7 +844,7 @@ contains
       call mpas_pool_get_array(meshPool, 'cellsOnCell', cellsOnCell)
 
       do iCell = 1, nCells
-         if ( .not. li_mask_is_grounded_ice(cellMask(iCell)) ) then
+         if (li_mask_is_floating_ice(cellMask(iCell))) then
             nNValues = 0
             NAccum = 0.0_RKIND
             do iCell2 = 1, nEdgesOnCell(iCell)
