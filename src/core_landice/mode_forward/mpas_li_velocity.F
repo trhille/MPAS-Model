@@ -810,6 +810,7 @@ contains
       real (kind=RKIND), dimension(:), pointer :: betaSolve, beta
       real (kind=RKIND), dimension(:), pointer :: effectivePressure, effectivePressureLimited
       real (kind=RKIND), dimension(:), pointer :: basalTemperature, basalPmpTemperature
+      real (kind=RKIND), dimension(:), pointer :: muFriction
       integer, dimension(:), pointer :: cellMask
       logical, pointer :: config_use_glp
       logical, pointer :: config_beta_thawed_only
@@ -847,6 +848,7 @@ contains
       call mpas_pool_get_array(geometryPool, 'cellMask', cellMask)
       call mpas_pool_get_array(hydroPool, 'effectivePressure', effectivePressure)
       call mpas_pool_get_array(velocityPool, 'effectivePressureLimited', effectivePressureLimited)
+      call mpas_pool_get_array(velocityPool, 'muFriction', muFriction)
 
       call mpas_pool_get_dimension(meshPool, 'nCells', nCells)
       call mpas_pool_get_array(meshPool, 'nEdgesOnCell', nEdgesOnCell)
@@ -894,6 +896,7 @@ contains
          effectivePressureLimited(iCell) = max(0.0_RKIND, effectivePressureLimited(iCell)) ! Never pass a negative N
          effectivePressureLimited(iCell) = min(config_effective_pressure_max, effectivePressureLimited(iCell))
       enddo
+      effectivePressureLimited(:) = effectivePressureLimited(:) * muFriction(:)
 
 
    !--------------------------------------------------------------------
