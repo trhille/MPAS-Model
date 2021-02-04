@@ -839,33 +839,6 @@ contains
       call mpas_pool_get_array(geometryPool, 'cellMask', cellMask)
 
       betaSolve = beta
-      
-      call mpas_pool_get_dimension(meshPool, 'nCells', nCells)
-      call mpas_pool_get_array(meshPool, 'nEdgesOnCell', nEdgesOnCell)
-      call mpas_pool_get_array(meshPool, 'cellsOnCell', cellsOnCell)
-
-      do iCell = 1, nCells
-         if (li_mask_is_floating_ice(cellMask(iCell))) then
-            nMuValues = 0
-            muAccum = 0.0_RKIND
-            nNValues = 0
-            NAccum = 0.0_RKIND
-            do iCell2 = 1, nEdgesOnCell(iCell)
-               neighbor = cellsOnCell(iCell2, iCell)
-               if (li_mask_is_grounded_ice(cellMask(neighbor))) then
-                  muAccum = muAccum + muFriction(neighbor)
-                  nMuValues = nMuValues + 1
-                  NAccum = NAccum + effectivePressure(neighbor)
-                  nNValues = nNValues + 1
-               endif
-            enddo
-               if (nMuValues > 0) then
-                  muFriction(iCell) = muAccum / real(nMuValues, kind=RKIND)  ! take average of neighboring muFriction values
-                  effectivePressure(iCell) = NAccum / real(nNValues, kind=RKIND) ! take average of neighboring effectivePressure values
-                  ! <  TODO: could do this in log space
-               endif
-         endif ! if iCell is floating
-      enddo ! cell loop
 
       if (config_beta_thawed_only) then
          call mpas_pool_get_array(thermalPool, 'basalTemperature', basalTemperature)
