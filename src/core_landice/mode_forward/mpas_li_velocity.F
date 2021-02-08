@@ -816,6 +816,7 @@ contains
       logical, pointer :: config_beta_thawed_only
       logical, pointer :: config_extend_effective_pressure
       real (kind=RKIND), pointer :: config_effective_pressure_max
+      real (kind=RKIND), pointer :: config_effective_pressure_min
       logical, pointer :: hydroActive
       real (kind=RKIND) :: betaAccum
       integer :: nBetaValues
@@ -834,6 +835,8 @@ contains
       call mpas_pool_get_config(liConfigs, 'config_beta_thawed_only', config_beta_thawed_only)
       call mpas_pool_get_config(liConfigs, 'config_extend_effective_pressure', config_extend_effective_pressure)
       call mpas_pool_get_config(liConfigs, 'config_effective_pressure_max', config_effective_pressure_max)
+      call mpas_pool_get_config(liConfigs, 'config_effective_pressure_min', config_effective_pressure_min)
+
 
       call mpas_pool_get_subpool(block % structs, 'geometry', geometryPool)
       call mpas_pool_get_subpool(block % structs, 'velocity', velocityPool)
@@ -893,7 +896,7 @@ contains
 
       ! Apply limits to N
       do iCell = 1, nCells
-         effectivePressureLimited(iCell) = max(0.0_RKIND, effectivePressureLimited(iCell)) ! Never pass a negative N
+         effectivePressureLimited(iCell) = max(config_effective_pressure_min, effectivePressureLimited(iCell)) ! Never pass a negative N
          effectivePressureLimited(iCell) = min(config_effective_pressure_max, effectivePressureLimited(iCell))
       enddo
       effectivePressureLimited(:) = effectivePressureLimited(:) * muFriction(:)
